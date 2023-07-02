@@ -15,9 +15,9 @@ async function fetchTodos() {
 }
 </script>
 <template>
-  <div>
+  <div class="section">
     <img src="/todo.jpg" width="500" alt="todo by Glenn Carstens-Peters" />
-    <h1>Hello World</h1>
+    <h1 class="title">Hello World</h1>
 
     <p>
       Photo by
@@ -36,7 +36,7 @@ async function fetchTodos() {
       {{ completedTodos.length }} completed items |
       {{ remainingTodos.length }} remaining items
     </p>
-    <ul>
+    <ul class="list">
       <li v-for="todo in todoList" :key="`todo-${todo.id}`">
         <input type="checkbox" :checked="todo.completed" />
         {{ todo.title }}
@@ -44,3 +44,20 @@ async function fetchTodos() {
     </ul>
   </div>
 </template>
+<style lang="scss">
+@import "./node_modules/bulma/bulma.sass";
+@import "./assets/main.scss";
+
+:root {
+  --text-color: #{$textColor};
+}
+
+.heading {
+  color: var(--text-color);
+}
+.list {
+  color: var(--text-color);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+</style>
