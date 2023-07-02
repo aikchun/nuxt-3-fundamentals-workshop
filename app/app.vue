@@ -1,53 +1,33 @@
-<script>
-import { defineNuxtComponent } from "#app";
-export default defineNuxtComponent({
-  data: () => ({
-    todoList: [],
-  }),
-  computed: {
-    completedTodos() {
-      return this.todoList.filter((todo) => todo.completed);
-    },
-    remainingTodos() {
-      return this.todoList.filter((todo) => !todo.completed);
-    },
-  },
-  methods: {
-    async fetchTodos() {
-      const response = await fetch(
-        "https://jsonplaceholder.typicode.com/todos"
-      );
-      this.todoList = await response.json();
-    },
-  },
-});
+<script setup>
+import { computed, ref } from "vue";
+const photoList = ref([]);
+const numberOfPhotos = computed(() => photoList.value.length);
+
+const evenAlbums = computed(() =>
+  photoList.value.filter((photo) => photo.albumId % 2 === 0)
+);
+
+const oddAlbums = computed(() =>
+  photoList.value.filter((photo) => !(photo.albumId % 2 === 0))
+);
+
+async function fetchPhotos() {
+  const response = await fetch("https://jsonplaceholder.typicode.com/photos");
+  photoList.value = await response.json();
+}
 </script>
 <template>
   <div>
-    <img src="/todo.jpg" width="500" alt="todo by Glenn Carstens-Peters" />
-    <h1>Hello World</h1>
-
+    <h1>Photo Gallery</h1>
+    <button type="button" @click="fetchPhotos">Fetch</button>
+    <p>Number of Photos {{ numberOfPhotos }}</p>
     <p>
-      Photo by
-      <a
-        href="https://unsplash.com/@glenncarstenspeters?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText"
-        >Glenn Carstens-Peters</a
-      >
-      on
-      <a
-        href="https://unsplash.com/s/photos/todo?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText"
-        >Unsplash</a
-      >
-    </p>
-    <button type="button" @click="fetchTodos">Fetch</button>
-    <p>
-      {{ completedTodos.length }} completed items |
-      {{ remainingTodos.length }} remaining items
+      {{ evenAlbums.length }} even albums | {{ oddAlbums.length }} odd albums
     </p>
     <ul>
-      <li v-for="todo in todoList" :key="`todo-${todo.id}`">
-        <input type="checkbox" :checked="todo.completed" />
-        {{ todo.title }}
+      <li v-for="photo in photoList" :key="`photo-${photo.id}`">
+        <img :src="photo.thumbnailUrl" />
+        {{ photo.title }}
       </li>
     </ul>
   </div>
