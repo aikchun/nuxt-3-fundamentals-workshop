@@ -1,5 +1,12 @@
 <script setup>
-import { computed, ref } from "vue";
+import { defineProps } from "vue";
+
+defineProps({
+  title: {
+    type: String,
+    default: "Hello World",
+  },
+});
 const todoList = ref([]);
 
 const completedTodos = computed(() =>
@@ -16,8 +23,8 @@ async function fetchTodos() {
 </script>
 <template>
   <div class="section">
-    <img src="/todo.jpg" width="500" alt="todo by Glenn Carstens-Peters" />
-    <h1 class="title">Hello World</h1>
+    <slot name="image" />
+    <h1 class="title">{{ title }}</h1>
 
     <p>
       Photo by
@@ -33,8 +40,7 @@ async function fetchTodos() {
     </p>
     <button type="button" @click="fetchTodos">Fetch</button>
     <p>
-      {{ completedTodos.length }} completed items |
-      {{ remainingTodos.length }} remaining items
+      <slot name="metrics" :completedTodos="completedTodos" />
     </p>
     <ul class="list">
       <li v-for="todo in todoList" :key="`todo-${todo.id}`">
@@ -44,20 +50,3 @@ async function fetchTodos() {
     </ul>
   </div>
 </template>
-<style lang="scss" module>
-@import "./node_modules/bulma/bulma.sass";
-@import "./assets/main.scss";
-
-:root {
-  --text-color: #{$textColor};
-}
-
-.heading {
-  color: var(--text-color);
-}
-.list {
-  color: var(--text-color);
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-}
-</style>
