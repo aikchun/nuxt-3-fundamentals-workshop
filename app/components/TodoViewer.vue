@@ -1,5 +1,4 @@
 <script setup>
-import BaseDisplay from "./BaseDisplay.vue"
 
 const todoList = ref([])
 
