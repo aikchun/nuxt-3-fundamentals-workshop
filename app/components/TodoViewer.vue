@@ -14,7 +14,6 @@ const remainingItems = computed(() => todoList.value.filter(todo => !todo.comple
 
 </script>
 <template>
-  <div> Before Base Display</div>
   <BaseDisplay :title="title" itemType="todos" v-model:itemList="todoList">
     <template v-slot:metrics>
       <p>{{ completedItems.length }} Completed | {{ remainingItems.length }} Remaining</p>
