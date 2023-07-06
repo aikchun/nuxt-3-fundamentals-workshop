@@ -20,7 +20,11 @@ async function fetchPhotos() {
   <h1>Photo Gallery</h1>
   <button type="button" @click="fetchPhotos">Fetch</button>
   <p>Number of Photos {{ numberOfPhotos }}</p>
-  <p>{{ evenAlbums.length }} even albums | {{ oddAlbums.length }} odd albums</p>
+  <slot name="metrics" :evenAlbums="evenAlbums" :oddAlbums="oddAlbums">
+    <p>
+      {{ evenAlbums.length }} even albums | {{ oddAlbums.length }} odd albums
+    </p>
+  </slot>
   <ul :class="$style.list">
     <li v-for="photo in photoList" :key="`photo-${photo.id}`">
       <img :src="photo.thumbnailUrl" />
